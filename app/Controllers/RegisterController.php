@@ -34,26 +34,42 @@ class RegisterController extends BaseController
     {
         if($_POST['password'] == $_POST['repeat']){
             
-            $name = $_POST['name'];
-            $password = md5($_POST['password']);
-            $telephone = $_POST['telephone'];
-            $email = $_POST['email'];
+            if($_POST['name'] == true && $_POST['password'] == true && $_POST['telephone'] == true && $_POST['email'] == true){
+                $name = $_POST['name'];
+                $password = md5($_POST['password']);
+                $telephone = $_POST['telephone'];
+                $email = $_POST['email'];
 
-            $object = new RegisterModel;
-            $examin = $object->examin($name, $telephone, $email);
+                $object = new RegisterModel;
+                //Последним значением передаю id равный -1
+                //Данное решение было приянято, что бы методом можно было пользоваться
+                //Когда пользователь будет обновлять свои значения в личном кабинете
+                // id равный -1 не может принадлежать какому либо пользователю                
+                $examin = $object->examin($name, $telephone, $email, -1);
 
-            if($examin["name_status"] == true && $examin["telephone_status"] == true && $examin["email_sttus"] == true){
-                $object->add($name, $password, $telephone, $email);
+                if($examin["name_status"] == true && $examin["telephone_status"] == true && $examin["email_sttus"] == true){
+                    $result = $object->add($name, $password, $telephone, $email);
+                    if($result == true){
+                        header("Location: /com/");
+                    } else {
+                        echo "Что то пошло не так...";
+                    }
+                } else {
+                    $this->data["info"] = [
+                        "name_text" => $examin["name_text"],
+                        "telephone_text" => $examin["telephone_text"],
+                        "email_text" => $examin["email_text"]
+                    ];
+                    $this->view->render($this->page, $this->data);
+                }
             } else {
-                echo $examin["name_text"];
-                echo "</br>";
-                echo $examin["telephone_text"];
-                echo "</br>";
-                echo $examin["email_text"];
+                $this->data["error"] = "Вы заполнили не все поля формы";
+                $this->view->render($this->page, $this->data);
             }
             
         } else {
-            echo "Поле ПАРОЛЬ и поле ПОВТОРНЫЙ ПАРОЛЬ не совпадают";
+            $this->data["error"] = "Поле ПАРОЛЬ и поле ПОВТОРНЫЙ ПАРОЛЬ не совпадают";
+            $this->view->render($this->page, $this->data);
         }   
        
     }

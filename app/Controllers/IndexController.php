@@ -10,7 +10,7 @@ class IndexController extends BaseController
     private $data;
     
     /**
-     * Простая заглушка
+     * Показываем главную страницу в представлении
      *
      * @param 
      * @return render()

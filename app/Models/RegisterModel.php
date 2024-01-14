@@ -26,9 +26,9 @@ class RegisterModel extends BaseModel
         $stmt->execute();
         
         if($stmt->rowCount() > 0) {
-            echo "успех";
+            return true;
         } else {
-            echo "провал";
+            return false;
         }
 
     }  
@@ -38,12 +38,12 @@ class RegisterModel extends BaseModel
      * Предварительно биндим данные
      * Возвращает массив с нужной информацией
      *
-     * @param string $name, int $telephone, string $email
+     * @param string $name, int $telephone, string $email, int $id
      * @return array
      */
-    public function examin(string $name, int $telephone, string $email)
+    public function examin(string $name, int $telephone, string $email, int $id)
     {   
-        $sql = "SELECT * FROM users WHERE name = :name";               
+        $sql = "SELECT * FROM users WHERE name = :name AND id != $id";               
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(":name", $name, PDO::PARAM_STR);
         $stmt->execute();
@@ -56,7 +56,7 @@ class RegisterModel extends BaseModel
             $name_status = true;
         }
         
-        $sql = "SELECT * FROM users WHERE telephone = :telephone";               
+        $sql = "SELECT * FROM users WHERE telephone = :telephone AND id != $id";               
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(":telephone", $telephone, PDO::PARAM_STR);
         $stmt->execute();
@@ -69,7 +69,7 @@ class RegisterModel extends BaseModel
             $telephone_status = true;
         }
         
-        $sql = "SELECT * FROM users WHERE email = :email";               
+        $sql = "SELECT * FROM users WHERE email = :email AND id != $id";               
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue(":email", $email, PDO::PARAM_STR);
         $stmt->execute();
