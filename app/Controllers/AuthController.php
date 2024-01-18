@@ -26,7 +26,7 @@ class AuthController extends BaseController
      * Выполняем проверку на наличие пользователя в БД
      *
      * @param 
-     * @return render()
+     * @return 
      */
     public function authentication()
     {
@@ -79,7 +79,7 @@ class AuthController extends BaseController
      * Обновление информации в БД
      *
      * @param 
-     * @return render()
+     * @return
      */
     public function update()
     {

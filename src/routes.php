@@ -43,6 +43,10 @@ if($route[2] == "index" || $route[2] == ""){
 }elseif ($route[2] == "add") {
     $route = new RegisterController;
     $route->add();
+
+//Все остальные адреса    
+}else{
+    echo "Запрашиваемая Вами страница, не существует!";
 }
  
 
